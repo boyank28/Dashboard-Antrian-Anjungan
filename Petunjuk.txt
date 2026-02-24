@@ -41,3 +41,4 @@ Update terakhir :
 10. Perubahan penampilan pada dashboard Ketersediaan Kamar
 11. Penambahan pengaturan untuk tampilan full screen di Layar TV ukuran 32 inchi ke atas
 12. Penyempurnaan pada Anjungan Pendaftaran Mandiri
+13. Penambahan menu baru Antrian loket dengan menambah kolom pada DBnya
