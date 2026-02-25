@@ -58,14 +58,16 @@ $count = mysqli_num_rows($result);
               BED
               <span><?= $row['jumlah'] ?></span>
             </div>
-            <div class="box terisi">
-              TERISI
-              <span><?= $row['terisi'] ?></span>
+            <div class="bottom-row">
+              <div class="box terisi">
+                TERISI
+                <span><?= $row['terisi'] ?></span>
+              </div>
+              <div class="box kosong">
+                KOSONG
+                <span><?= $row['kosong'] ?></span>
+              </div>
             </div>
-          </div>
-          <div class="box kosong">
-            KOSONG
-            <span><?= $row['kosong'] ?></span>
           </div>
         </div>
 

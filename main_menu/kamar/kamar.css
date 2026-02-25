@@ -58,6 +58,8 @@
 /* Kotak info modern */
 .info-box {
     display: flex;
+    flex-direction: column;
+    /* BED di atas, row di bawah */
     gap: 12px;
     margin-bottom: 12px;
 }
@@ -83,12 +85,12 @@
 }
 
 .terisi {
-    background: linear-gradient(135deg, #ff416c, #ff4b2b);
+    background: linear-gradient(135deg, #11998e, #38ef7d);
     /* merah gradasi */
 }
 
 .kosong {
-    background: linear-gradient(135deg, #11998e, #38ef7d);
+    background: linear-gradient(135deg, #ff416c, #ff4b2b);
     /* hijau gradasi */
 }
 
@@ -96,4 +98,15 @@
     display: block;
     font-size: 1.4em;
     margin-top: 6px;
+}
+
+/* Tambahan untuk row bawah */
+.bottom-row {
+    display: flex;
+    gap: 12px;
+}
+
+.bottom-row .box {
+    flex: 1;
+    /* TERISI dan KOSONG bagi rata */
 }
