@@ -61,3 +61,20 @@ function generate_no_rawat($tgl) {
 
     return date('Y/m/d', strtotime($tgl)) . "/" . $urut;
 }
+
+// Ubah format dd/mm/yyyy -> yyyy-mm-dd (untuk DB)
+function convertToDbDate($tglInput) {
+    $parts = explode("/", $tglInput);
+    if (count($parts) !== 3) return null;
+
+    $dd = (int)$parts[0];
+    $mm = (int)$parts[1];
+    $yyyy = (int)$parts[2];
+
+    // Validasi sederhana tanggal
+    if (!checkdate($mm, $dd, $yyyy)) {
+        return null;
+    }
+
+    return sprintf("%04d-%02d-%02d", $yyyy, $mm, $dd);
+}

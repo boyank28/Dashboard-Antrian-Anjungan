@@ -34,8 +34,21 @@
     max-width: 90%;
 }
 
-.form-container .aturan {
+.form-container .aturan,
+.form-container .form-fields {
     flex: 1;
+    /* masing-masing ambil porsi sama, 50:50 */
+}
+
+.form-fields {
+    display: flex;
+    flex-direction: column;
+    /* susun vertikal */
+    gap: 20px;
+    /* jarak antar field */
+}
+
+.form-container .aturan {
     background: transparent;
     /* biarkan warna dasar */
     border: none;
@@ -57,13 +70,18 @@
 }
 
 .form-container .form-input {
-    flex: 1;
+    display: flex;
+    /* aktifkan flexbox */
+    flex-direction: column;
+    /* susun vertikal */
+    align-items: flex-start;
+    /* rata kiri */
     background: transparent;
-    /* biarkan warna dasar */
     border: none;
     padding: 20px;
     border-radius: 6px;
-    text-align: center;
+    text-align: left;
+    /* teks rata kiri */
 }
 
 .form-container .form-input label {

@@ -1,10 +1,26 @@
 // Step 1: Cari pasien
 async function cariPasien() {
-    const identitas = document.getElementById('identitas').value;
-    if (!identitas) return alert("Isi No. KTP atau RM");
+    const identitas = document.getElementById('identitas').value.trim();
+    const tglLahirInput = document.getElementById('tgl_lahir').value.trim();
+
+    if (!identitas) {
+        return alert("Isi No. KTP atau RM");
+    }
+    if (!tglLahirInput) {
+        return alert("Isi Tanggal Lahir (dd/mm/yyyy)");
+    }
+
+    // Validasi format dd/mm/yyyy
+    const regex = /^([0-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/\d{4}$/;
+    if (!regex.test(tglLahirInput)) {
+        return alert("Format tanggal lahir harus dd/mm/yyyy");
+    }
 
     try {
-        const res = await fetch(`api_pasien.php?identitas=${encodeURIComponent(identitas)}`);
+        // Kirim langsung ke API, biarkan server yang konversi
+        const res = await fetch(
+            `api_pasien.php?identitas=${encodeURIComponent(identitas)}&tgl_lahir=${encodeURIComponent(tglLahirInput)}`
+        );
         if (!res.ok) throw new Error("HTTP error " + res.status);
 
         let data;
@@ -15,7 +31,7 @@ async function cariPasien() {
         }
 
         if (!data || data.error) {
-            alert(data.error || "Pasien tidak ditemukan");
+            alert(data.error || "Pasien tidak ditemukan atau tanggal lahir salah");
             return;
         }
 
@@ -23,7 +39,7 @@ async function cariPasien() {
         sessionStorage.setItem("no_rkm_medis", data.no_rkm_medis);
         sessionStorage.setItem("nm_pasien", data.nm_pasien);
 
-        // Tampilkan data pasien (Dropdown Jenis Bayar dihapus dari sini)
+        // Tampilkan data pasien
         document.getElementById('dataPasien').innerHTML = `
             <h3>Data Pasien</h3>
             <table class="pasien-table">
@@ -33,8 +49,17 @@ async function cariPasien() {
                 <tr><td class="label">Jenis Kelamin</td><td class="colon">:</td><td>${data.jk || "-"}</td></tr>
                 <tr><td class="label">Tempat/Tgl Lahir</td><td class="colon">:</td>
                     <td>${data.tmp_lahir || "-"}, ${data.tgl_lahir || "-"} Umur: ${data.umur || "-"}</td></tr>
-                <tr><td class="label">Alamat</td><td class="colon">:</td>
-                    <td>${data.alamat || "-"}<br>Kelurahan ${data.nama_kelurahan || ""}, Kecamatan ${data.nama_kecamatan || ""}</td></tr>
+                <tr>
+                  <td class="label">Alamat</td>
+                  <td class="colon">:</td>
+                  <td>
+                    ${data.alamat || "-"}<br>
+                    Kelurahan ${data.nama_kelurahan || ""}, 
+                    Kecamatan ${data.nama_kecamatan || ""}, 
+                    ${data.nama_kabupaten || ""}, 
+                    ${data.nama_propinsi || ""}
+                  </td>
+                </tr>
                 <tr><td class="label">No. Telp.</td><td class="colon">:</td><td>${data.no_tlp || "-"}</td></tr>
                 <tr><td class="label">Pekerjaan</td><td class="colon">:</td><td>${data.pekerjaan || "-"}</td></tr>
                 <tr><td class="label">Agama</td><td class="colon">:</td><td>${data.agama || "-"}</td></tr>
@@ -99,7 +124,6 @@ async function loadJadwalPoli(kd_poli) {
             sessionStorage.setItem("nm_dokter_" + j.kd_dokter, j.nm_dokter);
             sessionStorage.setItem("nm_poli_" + j.kd_poli, j.nm_poli);
 
-            // Ubah event onclick untuk memanggil loadPenjab
             html += `
                 <div class="card" onclick="loadPenjab('${j.kd_dokter}', '${j.kd_poli}')">
                     ${j.photo ? `<img src="${j.photo}" alt="Foto Dokter">` : ""}
@@ -133,7 +157,6 @@ async function loadPenjab(kd_dokter, kd_poli) {
         `;
 
         penjabList.forEach(p => {
-            // Gunakan inline styling untuk menengahkan nama penjab di dalam card
             html += `
                 <div class="card" style="text-align: center; padding: 25px 10px;" onclick="daftar('${kd_dokter}', '${kd_poli}', '${p.kd_pj}', '${p.png_jawab}')">
                     <h4 style="margin: 0;">${p.png_jawab}</h4>
@@ -142,7 +165,6 @@ async function loadPenjab(kd_dokter, kd_poli) {
         });
         html += "</div>";
 
-        // Timpa isi container jadwalPoli dengan pilihan penjab
         document.getElementById('jadwalPoli').innerHTML = html;
     } catch (e) {
         alert("Error load penjamin: " + e.message);
@@ -167,9 +189,7 @@ async function daftar(kd_dokter, kd_poli, kd_pj, nm_pj) {
     sessionStorage.setItem("draft_kd_dokter", kd_dokter);
     sessionStorage.setItem("draft_kd_poli", kd_poli);
 
-    const data = {
-        nm_pasien, nm_dokter, nm_poli, nm_pj
-    };
+    const data = { nm_pasien, nm_dokter, nm_poli, nm_pj };
 
     tampilkanDraft(data);
 }

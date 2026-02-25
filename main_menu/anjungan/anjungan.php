@@ -53,10 +53,18 @@ $setting = fetch_assoc("SELECT nama_instansi, alamat_instansi, kabupaten FROM se
       </div>
 
       <!-- Kolom kanan: input -->
-      <div class="form-input">
-        <label for="identitas">No. KTP / No. RM:</label>
-        <input type="text" id="identitas" placeholder="Masukkan No. KTP atau RM" onkeyup="autoCariPasien(event)">
+      <div class="form-fields">
+        <div class="form-input">
+          <label for="identitas">No. KTP / No. RM:</label>
+          <input type="text" id="identitas" placeholder="Masukkan No. KTP atau RM" onkeyup="autoCariPasien(event)">
+        </div>
+
+        <div class="form-input">
+          <label for="tgl_lahir">Tanggal Lahir (dd/mm/yyyy):</label>
+          <input type="text" id="tgl_lahir" placeholder="dd/mm/yyyy" onkeyup="autoCariPasien(event)">
+        </div>
       </div>
+
     </section>
 
     <!-- Step 2 + Step 3 + Step 4: Data pasien + Poli + Draft -->
